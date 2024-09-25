@@ -1,9 +1,10 @@
-package se.C9Lab1.components;
+package se.C9Lab1.decorators;
 
+import se.C9Lab1.components.Discount;
 import se.C9Lab1.entities.Product;
 import se.C9Lab1.entities.ShoppingCart;
 
-public class NoDiscount implements Discount{
+public class MockedConcreteComponent implements Discount {
 
   @Override
   public double apply(Product product, ShoppingCart shoppingCart) {

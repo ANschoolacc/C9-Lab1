@@ -1,28 +1,27 @@
 package se.C9Lab1.decorators;
 
+import se.C9Lab1.entities.ShoppingCart;
 import se.C9Lab1.components.Discount;
-import se.C9Lab1.Product;
+import se.C9Lab1.entities.Product;
 //Concrete Decorator
 public class QuantityDiscount extends BaseDiscount {
   public static final int FIVE = 5;
+  private static final String DESCRIPTION = "10kr avdrag per produkt när man handlar minst 5 produkter.";
 
   public QuantityDiscount(Discount nextDiscount) {
     super(nextDiscount);
   }
 
   @Override
-  public String getDescription(Product product) {
-    if (isApplicable(product)) {
-      return nextDiscount.getDescription(product) + " 10kr avdrag per produkt när man handlar minst 5 produkter.";
-    }
-    return nextDiscount.getDescription(product);
+  protected String getOwnDescription() {
+      return  DESCRIPTION;
   }
 
   @Override
-  protected boolean isApplicable(Product product) {return product.quantity() >= FIVE;}
+  protected boolean isApplicable(Product product, ShoppingCart shoppingCart) {return product.quantity() >= FIVE;}
 
   @Override
-  protected double calculateDiscount(Product product) {
+  protected double calculateDiscount(Product product, ShoppingCart shoppingCart) {
     return 10 * product.quantity();
   }
 }
