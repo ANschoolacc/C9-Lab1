@@ -1,4 +1,4 @@
-# Laboration 1 - Discounts with decoratorpattern
+# Laboration 1 - Discounts with Decorator Pattern
 
 ### To see an implementaion of the classes, go to Checkout.java and run it in your Java IDE.
 
