@@ -2,15 +2,10 @@ package se.C9Lab1.decorators;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import se.C9Lab1.entities.Product;
-import se.C9Lab1.entities.ShoppingCart;
 
-
-import static org.junit.jupiter.api.Assertions.*;
-
-
-import java.time.LocalDate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BaseDiscountTest {
   private final Product product = new Product("TEST_PRODUCT", 100, 1);

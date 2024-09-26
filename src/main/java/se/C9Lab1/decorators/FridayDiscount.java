@@ -1,13 +1,11 @@
 package se.C9Lab1.decorators;
 
-import se.C9Lab1.entities.ShoppingCart;
 import se.C9Lab1.components.Discount;
 import se.C9Lab1.entities.Product;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-//Concrete Decorator
 public class FridayDiscount extends BaseDiscount {
   private static final double TEN_PERCENT = 0.1;
   private static final String DESCRIPTION = "Fredagsrabatt 10%.";

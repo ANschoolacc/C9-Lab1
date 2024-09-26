@@ -1,9 +1,8 @@
 package se.C9Lab1.decorators;
 
-import se.C9Lab1.entities.ShoppingCart;
 import se.C9Lab1.components.Discount;
 import se.C9Lab1.entities.Product;
-//Concrete Decorator
+
 public class MilkDiscount extends BaseDiscount {
   public static final double FIVE_PERCENT = 0.05;
   public static final String MILK = "MJÖLK";

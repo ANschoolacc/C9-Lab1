@@ -2,7 +2,6 @@ package se.C9Lab1.decorators;
 
 import se.C9Lab1.components.Discount;
 import se.C9Lab1.entities.Product;
-import se.C9Lab1.entities.ShoppingCart;
 
 public class GeneralDiscount implements Discount {
   Discount nextDiscount;
@@ -33,6 +32,7 @@ public class GeneralDiscount implements Discount {
     if(isApplicable.test(product)){
       appliedDescription = description;
     }
+
     String nextDescription = nextDiscount.getDescription(product);
 
     if (!appliedDescription.isEmpty() && !nextDescription.isEmpty()) {

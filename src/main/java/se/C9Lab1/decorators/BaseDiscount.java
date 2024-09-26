@@ -1,10 +1,8 @@
 package se.C9Lab1.decorators;
 
-import se.C9Lab1.entities.ShoppingCart;
 import se.C9Lab1.components.Discount;
 import se.C9Lab1.entities.Product;
 
-//BaseDecorator wrapper
 abstract class BaseDiscount implements Discount {
   protected Discount nextDiscount;
 
@@ -28,6 +26,7 @@ abstract class BaseDiscount implements Discount {
     if(isApplicable(product)){
       appliedDescription += getOwnDescription();
     }
+
     String nextDescription = nextDiscount.getDescription(product);
 
     if (!appliedDescription.isEmpty() && !nextDescription.isEmpty()) {
