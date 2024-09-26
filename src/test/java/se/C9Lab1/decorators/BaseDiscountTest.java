@@ -1,13 +1,16 @@
 package se.C9Lab1.decorators;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import se.C9Lab1.entities.Product;
+import se.C9Lab1.entities.ShoppingCart;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BaseDiscountTest {
+  private final ShoppingCart shoppingCart = new ShoppingCart("TEST_SHOPPINGCART", LocalDate.now());
   private final Product product = new Product("TEST_PRODUCT", 100, 1);
   private final MockedConcreteComponent mockedConcreteComponent = new MockedConcreteComponent();
   private final String FIRST_DESCRIPTION = "5% off!";
@@ -15,17 +18,21 @@ public class BaseDiscountTest {
   private final Double DECORATOR_CALC1 = 20.0;
   private final Double DECORATOR_CALC2 = 30.0;
 
+  @BeforeEach
+  void setUp() {
+    shoppingCart.addProduct(product);
+  }
 
   @Nested
   class GetDescription {
     @Test
-    @DisplayName("No discount applied should return empty string")
+    @DisplayName("No discount applied should return empty list")
     void noDiscountAppliedShouldReturnEmptyString() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, false, "5% off!", 0);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, false, "10% off!", 0);
-      String description = firstDiscount.getDescription(product);
+      List<String> description = firstDiscount.getDescription(shoppingCart);
 
-      assertEquals("", description);
+      assertEquals(List.of(), description);
     }
 
     @Test
@@ -33,9 +40,9 @@ public class BaseDiscountTest {
     void onlyOneDecoratorsIsApplicableIsTrueShouldReturnOnlyOneDescriptionString() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, true, SECOND_DESCRIPTION, 0);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, false, FIRST_DESCRIPTION, 0);
-      String description = firstDiscount.getDescription(product);
+      List<String> description = firstDiscount.getDescription(shoppingCart);
 
-      assertEquals(SECOND_DESCRIPTION, description);
+      assertEquals(List.of(SECOND_DESCRIPTION), description);
     }
 
     @Test
@@ -43,9 +50,9 @@ public class BaseDiscountTest {
     void bothDecoratorsIsApplicableAreTrueShouldReturnCombinedDescriptionString() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, true, SECOND_DESCRIPTION, 0);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, true, FIRST_DESCRIPTION, 0);
-      String description = firstDiscount.getDescription(product);
+      List<String> description = firstDiscount.getDescription(shoppingCart);
 
-      assertEquals(FIRST_DESCRIPTION + System.lineSeparator() + SECOND_DESCRIPTION, description);
+      assertEquals(List.of(FIRST_DESCRIPTION, SECOND_DESCRIPTION), description);
     }
   }
 
@@ -56,9 +63,9 @@ public class BaseDiscountTest {
     void noDecoratorsIsApplicableIsTrueShouldReturnZero() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, false, FIRST_DESCRIPTION, DECORATOR_CALC2);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, false, SECOND_DESCRIPTION, DECORATOR_CALC1);
-      double discount = firstDiscount.apply(product);
+      List<Double> discount = firstDiscount.apply(shoppingCart);
 
-      assertEquals(0, discount);
+      assertEquals(List.of(), discount);
     }
 
     @Test
@@ -66,9 +73,9 @@ public class BaseDiscountTest {
     void oneDecoratorsIsApplicableIsTrueShouldReturnThatDecoratorsCalculateDiscountReturnValue() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, true, FIRST_DESCRIPTION, DECORATOR_CALC2);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, false, SECOND_DESCRIPTION, DECORATOR_CALC1);
-      double discount = firstDiscount.apply(product);
+      List<Double> discount = firstDiscount.apply(shoppingCart);
 
-      assertEquals(DECORATOR_CALC2, discount);
+      assertEquals(List.of(DECORATOR_CALC2), discount);
     }
 
     @Test
@@ -76,9 +83,9 @@ public class BaseDiscountTest {
     void bothDecoratorsIsApplicableIsTrueShouldReturnSumOfBothDecoratorsCalculateDiscountReturnValue() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, true, FIRST_DESCRIPTION, DECORATOR_CALC2);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, true, SECOND_DESCRIPTION, DECORATOR_CALC1);
-      double discount = firstDiscount.apply(product);
+      List<Double> discount = firstDiscount.apply(shoppingCart);
 
-      assertEquals(DECORATOR_CALC1 + DECORATOR_CALC2, discount);
+      assertEquals(List.of(DECORATOR_CALC1, DECORATOR_CALC2), discount);
     }
 
   }

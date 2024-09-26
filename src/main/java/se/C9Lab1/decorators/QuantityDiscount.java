@@ -2,6 +2,7 @@ package se.C9Lab1.decorators;
 
 import se.C9Lab1.components.Discount;
 import se.C9Lab1.entities.Product;
+import se.C9Lab1.entities.ShoppingCart;
 
 public class QuantityDiscount extends BaseDiscount {
   public static final int FIVE = 5;
@@ -17,10 +18,20 @@ public class QuantityDiscount extends BaseDiscount {
   }
 
   @Override
-  protected boolean isApplicable(Product product) {return product.quantity() >= FIVE;}
+  protected boolean isApplicable(ShoppingCart shoppingCart) {
+    return shoppingCart
+        .getProducts()
+        .stream()
+        .anyMatch(product -> product.quantity() >= FIVE);}
 
   @Override
-  protected double calculateDiscount(Product product) {
-    return 10 * product.quantity();
+  protected double calculateDiscount(ShoppingCart shoppingCart) {
+    double discount = 0;
+    for (Product product : shoppingCart.getProducts()) {
+      if (product.quantity() >= FIVE) {
+        discount += (product.quantity() * 10);
+      }
+    }
+    return discount;
   }
 }

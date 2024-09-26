@@ -1,22 +1,33 @@
 package se.C9Lab1.decorators;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import se.C9Lab1.components.Discount;
 import se.C9Lab1.entities.Product;
+import se.C9Lab1.entities.ShoppingCart;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GeneralDiscountTest {
+  private final ShoppingCart shoppingCart = new ShoppingCart("TEST_SHOPPINGCART", LocalDate.now());
   private final Product product = new Product("TEST_PRODUCT", 100, 1);
-  private final IsApplicable CONDITION_TRUE = (Product p) -> true;
-  private final IsApplicable CONDITION_FALSE = (Product p) -> false;
-  private final CalculateDiscount DISCOUNT_CALC_ONE = (Product p) -> 10;
-  private final CalculateDiscount DISCOUNT_CALC_TWO = (Product p) -> 20;
+  private final IsApplicable CONDITION_TRUE = (ShoppingCart shoppingCart) -> true;
+  private final IsApplicable CONDITION_FALSE = (ShoppingCart shoppingCart) -> false;
+  private final CalculateDiscount DISCOUNT_CALC_ONE = (ShoppingCart shoppingCart) -> 10;
+  private final CalculateDiscount DISCOUNT_CALC_TWO = (ShoppingCart shoppingCart) -> 20;
   private final MockedConcreteComponent mockedConcreteComponent = new MockedConcreteComponent();
   private final String DESCRIPTION_ONE = "10% off!";
   private final String DESCRIPTION_TWO = "20% off!";
+
+  @BeforeEach
+  void setUp() {
+    shoppingCart.addProduct(product);
+  }
 
   @Nested
   class GetDescription {
@@ -28,9 +39,9 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_FALSE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      String description = generalDiscount1.getDescription(product);
+      List<String> description = generalDiscount1.getDescription(shoppingCart);
 
-      assertEquals("", description);
+      assertEquals(List.of(), description);
     }
 
     @Test
@@ -41,9 +52,9 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_FALSE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      String description = generalDiscount1.getDescription(product);
+      List<String> description = generalDiscount1.getDescription(shoppingCart);
 
-      assertEquals(DESCRIPTION_TWO, description);
+      assertEquals(List.of(DESCRIPTION_TWO), description);
     }
 
     @Test
@@ -54,9 +65,9 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_TRUE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      String description = generalDiscount1.getDescription(product);
+      List<String> description = generalDiscount1.getDescription(shoppingCart);
 
-      assertEquals(DESCRIPTION_ONE + System.lineSeparator() + DESCRIPTION_TWO, description);
+      assertEquals(List.of(DESCRIPTION_ONE, DESCRIPTION_TWO), description);
     }
   }
 
@@ -70,10 +81,9 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_FALSE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      double discount = generalDiscount1.apply(product);
+      List<Double> discount = generalDiscount1.apply(shoppingCart);
 
-      assertEquals(0, discount);
-
+      assertEquals(List.of(), discount);
     }
 
     @Test
@@ -84,9 +94,9 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_FALSE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      double discount = generalDiscount1.apply(product);
+      List<Double> discount = generalDiscount1.apply(shoppingCart);
 
-      assertEquals(20, discount);
+      assertEquals(List.of(20.0), discount);
     }
 
     @Test
@@ -97,9 +107,9 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_TRUE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      double discount = generalDiscount1.apply(product);
+      List<Double> discount = generalDiscount1.apply(shoppingCart);
 
-      assertEquals(30, discount);
+      assertEquals(List.of(10.0, 20.0), discount);
     }
   }
 }
