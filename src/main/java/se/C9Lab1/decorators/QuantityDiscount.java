@@ -18,10 +18,10 @@ public class QuantityDiscount extends BaseDiscount {
   }
 
   @Override
-  protected boolean isApplicable(Product product, ShoppingCart shoppingCart) {return product.quantity() >= FIVE;}
+  protected boolean isApplicable(Product product) {return product.quantity() >= FIVE;}
 
   @Override
-  protected double calculateDiscount(Product product, ShoppingCart shoppingCart) {
+  protected double calculateDiscount(Product product) {
     return 10 * product.quantity();
   }
 }

@@ -5,5 +5,5 @@ import se.C9Lab1.entities.ShoppingCart;
 
 @FunctionalInterface
 public interface IsApplicable {
-    boolean test(Product product, ShoppingCart shoppingCart);
+    boolean test(Product product);
 }

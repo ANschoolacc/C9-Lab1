@@ -5,5 +5,5 @@ import se.C9Lab1.entities.ShoppingCart;
 
 @FunctionalInterface
 public interface CalculateDiscount {
-    double calculateDiscount(Product product, ShoppingCart shoppingCart);
+    double calculateDiscount(Product product);
 }

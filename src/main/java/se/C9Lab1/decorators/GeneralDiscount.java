@@ -18,22 +18,22 @@ public class GeneralDiscount implements Discount {
   }
 
   @Override
-  public double apply(Product product, ShoppingCart shoppingCart) {
+  public double apply(Product product) {
     double discount = 0;
-    if(isApplicable.test(product, shoppingCart)){
-      discount = calculation.calculateDiscount(product, shoppingCart);
+    if(isApplicable.test(product)){
+      discount = calculation.calculateDiscount(product);
     }
-    discount += nextDiscount.apply(product, shoppingCart);
+    discount += nextDiscount.apply(product);
     return discount;
   }
 
   @Override
-  public String getDescription(Product product, ShoppingCart shoppingCart) {
+  public String getDescription(Product product) {
     String appliedDescription = "";
-    if(isApplicable.test(product, shoppingCart)){
+    if(isApplicable.test(product)){
       appliedDescription = description;
     }
-    String nextDescription = nextDiscount.getDescription(product, shoppingCart);
+    String nextDescription = nextDiscount.getDescription(product);
 
     if (!appliedDescription.isEmpty() && !nextDescription.isEmpty()) {
       appliedDescription += System.lineSeparator() + nextDescription;

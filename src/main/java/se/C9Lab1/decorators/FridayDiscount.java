@@ -5,6 +5,7 @@ import se.C9Lab1.components.Discount;
 import se.C9Lab1.entities.Product;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 //Concrete Decorator
 public class FridayDiscount extends BaseDiscount {
@@ -19,12 +20,12 @@ public class FridayDiscount extends BaseDiscount {
   }
 
   @Override
-  protected boolean isApplicable(Product product, ShoppingCart shoppingCart) {
-    return shoppingCart.getDateOfPurchase().getDayOfWeek() == DayOfWeek.FRIDAY;
+  protected boolean isApplicable(Product product) {
+    return LocalDate.now().getDayOfWeek() == DayOfWeek.FRIDAY;
   }
 
   @Override
-  protected double calculateDiscount(Product product, ShoppingCart shoppingCart) {
+  protected double calculateDiscount(Product product) {
     return TEN_PERCENT * product.price();
   }
 }

@@ -18,12 +18,12 @@ public class MilkDiscount extends BaseDiscount {
   }
 
   @Override
-  protected boolean isApplicable(Product product, ShoppingCart shoppingCart) {
+  protected boolean isApplicable(Product product) {
     return product.name().equalsIgnoreCase(MILK);
   }
 
   @Override
-  protected double calculateDiscount(Product product, ShoppingCart shoppingCart) {
+  protected double calculateDiscount(Product product) {
   return FIVE_PERCENT * product.price();
   }
 }

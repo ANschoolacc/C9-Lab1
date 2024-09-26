@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 
 public class BaseDiscountTest {
-  private final ShoppingCart shoppingCart = new ShoppingCart("TEST_CART", LocalDate.now());
   private final Product product = new Product("TEST_PRODUCT", 100, 1);
   private final MockedConcreteComponent mockedConcreteComponent = new MockedConcreteComponent();
   private final String FIRST_DESCRIPTION = "5% off!";
@@ -29,7 +28,7 @@ public class BaseDiscountTest {
     void noDiscountAppliedShouldReturnEmptyString() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, false, "5% off!", 0);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, false, "10% off!", 0);
-      String description = firstDiscount.getDescription(product, shoppingCart);
+      String description = firstDiscount.getDescription(product);
 
       assertEquals("", description);
     }
@@ -39,7 +38,7 @@ public class BaseDiscountTest {
     void onlyOneDecoratorsIsApplicableIsTrueShouldReturnOnlyOneDescriptionString() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, true, SECOND_DESCRIPTION, 0);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, false, FIRST_DESCRIPTION, 0);
-      String description = firstDiscount.getDescription(product, shoppingCart);
+      String description = firstDiscount.getDescription(product);
 
       assertEquals(SECOND_DESCRIPTION, description);
     }
@@ -49,7 +48,7 @@ public class BaseDiscountTest {
     void bothDecoratorsIsApplicableAreTrueShouldReturnCombinedDescriptionString() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, true, SECOND_DESCRIPTION, 0);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, true, FIRST_DESCRIPTION, 0);
-      String description = firstDiscount.getDescription(product, shoppingCart);
+      String description = firstDiscount.getDescription(product);
 
       assertEquals(FIRST_DESCRIPTION + System.lineSeparator() + SECOND_DESCRIPTION, description);
     }
@@ -62,7 +61,7 @@ public class BaseDiscountTest {
     void noDecoratorsIsApplicableIsTrueShouldReturnZero() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, false, FIRST_DESCRIPTION, DECORATOR_CALC2);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, false, SECOND_DESCRIPTION, DECORATOR_CALC1);
-      double discount = firstDiscount.apply(product, shoppingCart);
+      double discount = firstDiscount.apply(product);
 
       assertEquals(0, discount);
     }
@@ -72,7 +71,7 @@ public class BaseDiscountTest {
     void oneDecoratorsIsApplicableIsTrueShouldReturnThatDecoratorsCalculateDiscountReturnValue() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, true, FIRST_DESCRIPTION, DECORATOR_CALC2);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, false, SECOND_DESCRIPTION, DECORATOR_CALC1);
-      double discount = firstDiscount.apply(product, shoppingCart);
+      double discount = firstDiscount.apply(product);
 
       assertEquals(DECORATOR_CALC2, discount);
     }
@@ -82,7 +81,7 @@ public class BaseDiscountTest {
     void bothDecoratorsIsApplicableIsTrueShouldReturnSumOfBothDecoratorsCalculateDiscountReturnValue() {
       BaseDiscount secondDiscount = new MockedConcreteDecorator(mockedConcreteComponent, true, FIRST_DESCRIPTION, DECORATOR_CALC2);
       BaseDiscount firstDiscount = new MockedConcreteDecorator(secondDiscount, true, SECOND_DESCRIPTION, DECORATOR_CALC1);
-      double discount = firstDiscount.apply(product, shoppingCart);
+      double discount = firstDiscount.apply(product);
 
       assertEquals(DECORATOR_CALC1 + DECORATOR_CALC2, discount);
     }

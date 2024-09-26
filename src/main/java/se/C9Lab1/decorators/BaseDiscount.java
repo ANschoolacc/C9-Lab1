@@ -13,22 +13,22 @@ abstract class BaseDiscount implements Discount {
   }
 
   @Override
-  public double apply(Product product, ShoppingCart shoppingCart) {
+  public double apply(Product product) {
     double discount = 0;
-      if(isApplicable(product, shoppingCart)){
-        discount = calculateDiscount(product, shoppingCart);
+      if(isApplicable(product)){
+        discount = calculateDiscount(product);
       }
-      discount += nextDiscount.apply(product, shoppingCart);
+      discount += nextDiscount.apply(product);
       return discount;
   }
 
   @Override
-  public String getDescription(Product product, ShoppingCart shoppingCart) {
+  public String getDescription(Product product) {
     String appliedDescription = "";
-    if(isApplicable(product, shoppingCart)){
+    if(isApplicable(product)){
       appliedDescription += getOwnDescription();
     }
-    String nextDescription = nextDiscount.getDescription(product, shoppingCart);
+    String nextDescription = nextDiscount.getDescription(product);
 
     if (!appliedDescription.isEmpty() && !nextDescription.isEmpty()) {
       appliedDescription += System.lineSeparator() + nextDescription;
@@ -38,7 +38,7 @@ abstract class BaseDiscount implements Discount {
     return appliedDescription;
   }
 
-  protected abstract boolean isApplicable(Product product, ShoppingCart shoppingCart);
-  protected abstract double calculateDiscount(Product product, ShoppingCart shoppingCart);
+  protected abstract boolean isApplicable(Product product);
+  protected abstract double calculateDiscount(Product product);
   protected abstract String getOwnDescription();
 }

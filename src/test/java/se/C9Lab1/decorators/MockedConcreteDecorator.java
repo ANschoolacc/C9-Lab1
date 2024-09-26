@@ -16,12 +16,12 @@ public class MockedConcreteDecorator extends BaseDiscount {
     this.discount = discount;
   }
   @Override
-  protected boolean isApplicable(Product product, ShoppingCart shoppingCart) {
+  protected boolean isApplicable(Product product) {
     return applicable;
   }
 
   @Override
-  protected double calculateDiscount(Product product, ShoppingCart shoppingCart) {
+  protected double calculateDiscount(Product product) {
     return discount;
   }
 

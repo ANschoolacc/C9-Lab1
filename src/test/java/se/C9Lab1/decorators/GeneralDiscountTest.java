@@ -12,12 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 
 public class GeneralDiscountTest {
-  private final ShoppingCart shoppingCart = new ShoppingCart("TEST_CART", LocalDate.now());
   private final Product product = new Product("TEST_PRODUCT", 100, 1);
-  private final IsApplicable CONDITION_TRUE = (Product p, ShoppingCart cart) -> true;
-  private final IsApplicable CONDITION_FALSE = (Product p, ShoppingCart cart) -> false;
-  private final CalculateDiscount DISCOUNT_CALC_ONE = (Product p, ShoppingCart cart) -> 10;
-  private final CalculateDiscount DISCOUNT_CALC_TWO = (Product p, ShoppingCart cart) -> 20;
+  private final IsApplicable CONDITION_TRUE = (Product p) -> true;
+  private final IsApplicable CONDITION_FALSE = (Product p) -> false;
+  private final CalculateDiscount DISCOUNT_CALC_ONE = (Product p) -> 10;
+  private final CalculateDiscount DISCOUNT_CALC_TWO = (Product p) -> 20;
   private final MockedConcreteComponent mockedConcreteComponent = new MockedConcreteComponent();
   private final String DESCRIPTION_ONE = "10% off!";
   private final String DESCRIPTION_TWO = "20% off!";
@@ -32,7 +31,7 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_FALSE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      String description = generalDiscount1.getDescription(product, shoppingCart);
+      String description = generalDiscount1.getDescription(product);
 
       assertEquals("", description);
     }
@@ -45,7 +44,7 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_FALSE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      String description = generalDiscount1.getDescription(product, shoppingCart);
+      String description = generalDiscount1.getDescription(product);
 
       assertEquals(DESCRIPTION_TWO, description);
     }
@@ -58,7 +57,7 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_TRUE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      String description = generalDiscount1.getDescription(product, shoppingCart);
+      String description = generalDiscount1.getDescription(product);
 
       assertEquals(DESCRIPTION_ONE + System.lineSeparator() + DESCRIPTION_TWO, description);
     }
@@ -74,7 +73,7 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_FALSE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      double discount = generalDiscount1.apply(product, shoppingCart);
+      double discount = generalDiscount1.apply(product);
 
       assertEquals(0, discount);
 
@@ -88,7 +87,7 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_FALSE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      double discount = generalDiscount1.apply(product, shoppingCart);
+      double discount = generalDiscount1.apply(product);
 
       assertEquals(20, discount);
     }
@@ -101,7 +100,7 @@ public class GeneralDiscountTest {
       Discount generalDiscount1 =
           new GeneralDiscount(DESCRIPTION_ONE, CONDITION_TRUE, DISCOUNT_CALC_ONE, generalDiscount2);
 
-      double discount = generalDiscount1.apply(product, shoppingCart);
+      double discount = generalDiscount1.apply(product);
 
       assertEquals(30, discount);
     }
