@@ -2,6 +2,7 @@ package se.C9Lab1.decorators;
 
 import se.C9Lab1.components.Discount;
 import se.C9Lab1.entities.Product;
+import se.C9Lab1.entities.ShoppingCart;
 
 public class MockedConcreteDecorator extends BaseDiscount {
   private final boolean applicable;
@@ -15,12 +16,12 @@ public class MockedConcreteDecorator extends BaseDiscount {
     this.discount = discount;
   }
   @Override
-  protected boolean isApplicable(Product product) {
+  protected boolean isApplicable(ShoppingCart shoppingCart) {
     return applicable;
   }
 
   @Override
-  protected double calculateDiscount(Product product) {
+  protected double calculateDiscount(ShoppingCart shoppingCart) {
     return discount;
   }
 
