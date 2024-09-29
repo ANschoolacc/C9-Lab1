@@ -7,7 +7,7 @@ import java.time.DayOfWeek;
 
 public class FridayDiscount extends BaseDiscount {
   private static final double PERCENT = 0.1;
-  private static final String DESCRIPTION = "Fredagsrabatt 10%.";
+  private static final String DESCRIPTION = "Fredagsrabatt, 10% rabatt på totalbeloppet.";
 
   public FridayDiscount(Discount nextDiscount) {super(nextDiscount);}
 
